@@ -1,10 +1,13 @@
-# imports
+import cython
+cimport cython
 import numpy as np
+cimport numpy as np
 from scipy import special
-# some variables 
-sq2 = np.sqrt(2)
-eps = np.finfo(np.float32).eps
-l2p = np.log(2) + np.log(np.pi)
+
+
+cdef double sq2 = np.sqrt(2)
+cdef double eps = np.finfo(np.float32).eps
+cdef double l2p = np.log(2) + np.log(np.pi)
 
 
 """
@@ -12,9 +15,9 @@ joint_min function takes the average (mu) and covariance as arguments
 and returns the predicted minimum.
 """
 
-def joint_min(mu, var, with_derivatives=False, **kwargs):
+def joint_min(np.ndarray[np.double_t, ndim=1] mu, np.ndarray[np.double_t, ndim=2] var, with_derivatives=False, **kwargs):
 
-    logP = np.zeros(mu.shape)
+    logP = np.zeros(mu.shape[0])
     D = mu.shape[0]
     if with_derivatives:
         dlogPdMu = np.zeros((D, D))
